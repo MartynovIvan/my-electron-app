@@ -1,5 +1,5 @@
 {
-  "name": "my-electron-app",
+  "name": "@MartynovIvan/my-electron-app",
   "productName": "MongoDB Query Executor",
   "version": "1.0.0",
   "type": "module",
@@ -10,6 +10,9 @@
     "email": "derisk@3tsoftwarelabs.com"
   },
   "license": "MIT Licence",
+  "publishConfig": {
+    "@MartynovIvan:registry": "https://npm.pkg.github.com/"
+  },
   "scripts": {
     "dev": "cross-env DEV= vite",
     "build": "tsc && vite build && npm run copy-backend && electron-builder",

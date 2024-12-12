@@ -6,7 +6,41 @@ on:
   pull_request:
     branches: ["main"]
 
+permissions: write-all
+
 jobs:
+
+  build_NIGHTLY:
+
+    strategy:
+      matrix:
+        os:
+          [
+            { name: 'linux', image: 'ubuntu-latest' },
+          ]
+    runs-on: ${{ matrix.os.image }}
+    steps:
+      - name: Github checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js with GitHub Packages Auth
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://npm.pkg.github.com/'
+          scope: '@MartynovIvan'
+
+      - name: Update package.json version
+        run: |
+          node -e "const fs = require('fs'); const pkg = require('./package.json'); pkg.version = '1.0.0+' + new Date().toISOString().split('T')[0]; fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\n');"
+
+      - run: npm ci
+
+      - name: Publish app
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.MY_PERSONAL_TOKEN }}
+
   eslint:
     name: Run ESLint
     runs-on: ubuntu-latest
@@ -26,7 +60,6 @@ jobs:
       - name: Run ESLint
         run: npm run lint
         continue-on-error: true # Ensure the job continues even if ESLint finds errors
-
 
   build:
     name: Build on ${{ matrix.os }} with Node.js ${{ matrix.node-version }}
@@ -49,11 +82,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run build
 
       - name: Test
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm test --timeout=15000
