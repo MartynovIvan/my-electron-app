@@ -186,7 +186,6 @@ body {
 .text-truncate {
   width: 100%;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 
@@ -198,4 +197,81 @@ body {
   justify-content: center;
   align-items: center;
   -webkit-app-region: drag;
+}
+
+.app-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  padding: 20px;
+}
+
+.app-top {
+  padding-bottom: 15px;
+}
+
+.app-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.app-action {
+  max-width: 500px;
+  width: 100%;
+}
+
+.app-action textarea {
+  max-height: 100px;
+  resize: none;
+}
+
+.app-res-his-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 900px;
+  width: 100%;
+}
+
+.app-results .card,
+.app-history .card {
+  height: 218px;
+}
+.app-results .card-body,
+.app-history .card-body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-results pre,
+.app-history .list-group {
+  overflow: scroll;
+}
+
+.app-history {
+  overflow-x: hidden;
+}
+
+.app-results {
+  overflow: hidden;
+}
+
+.app-results,
+.app-history {
+  flex: 1;
+}
+
+.list-group-item {
+  min-height: 40px; /* Adjust as needed */
 }

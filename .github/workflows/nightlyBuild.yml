@@ -1,8 +1,8 @@
-name: Nightly Build 
+name: Nightly Build
 
 on:
   schedule:
-  - cron: "0 0 * * 1-5"
+    - cron: "0 0 * * 1-5"
 
 permissions: write-all
 
@@ -12,9 +12,9 @@ jobs:
       matrix:
         os:
           [
-            { name: 'linux', image: 'ubuntu-latest' },
-            { name: 'windows', image: 'windows-latest' },
-            { name: 'macos', image: 'macos-latest' },
+            { name: "linux", image: "ubuntu-latest" },
+            { name: "windows", image: "windows-latest" },
+            { name: "macos", image: "macos-latest" },
           ]
     runs-on: ${{ matrix.os.image }}
     steps:
@@ -27,9 +27,9 @@ jobs:
       - name: Update package.json version
         run: |
           node -e "const fs = require('fs'); const pkg = require('./package.json'); pkg.version = '1.0.0+' + new Date().toLocaleDateString('en-GB').replaceAll('/', '-'); fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2) + '\n');"
-          
+
       - run: npm ci
-      - name: Publish app
+      - name: Release app
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm publish
+        run: npm run release

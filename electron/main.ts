@@ -65,13 +65,7 @@ function createWindow() {
         { role: "selectAll" },
       ],
     },
-    // { role: 'fileMenu' }
-    {
-      label: "File",
-      submenu: [
-        { role: "close" }, // or { role: 'quit' } based on needs
-      ],
-    },
+
     // You can add other menu items here if necessary
   ];
 
@@ -80,8 +74,10 @@ function createWindow() {
 
   mainWindow = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
-    width: 800,
-    height: 600,
+    width: 680,
+    height: 644,
+    resizable: false,
+    title: "My App",
     titleBarStyle: "hidden",
     ...(process.platform !== "darwin" ? { titleBarOverlay: true } : {}),
     webPreferences: {
@@ -90,7 +86,7 @@ function createWindow() {
   });
 
   if (isDev) {
-    mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools({ mode: "detach" });
     mainWindow.loadURL(VITE_DEV_SERVER_URL as string);
   } else {
     mainWindow.loadFile(path.join(RENDERER_DIST, "index.html"));

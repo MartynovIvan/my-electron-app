@@ -1,5 +1,6 @@
 {
   "name": "@MartynovIvan/my-electron-app",
+  "productName": "MongoDB Query Executor",
   "version": "1.0.0",
   "type": "module",
   "main": "dist-electron/main.js",
@@ -8,7 +9,7 @@
     "name": "De-risk team",
     "email": "derisk@3tsoftwarelabs.com"
   },
-  "license": "Apache-2.0",
+  "license": "MIT Licence",
   "publishConfig": {
     "@MartynovIvan:registry": "https://npm.pkg.github.com/"
   },
@@ -18,6 +19,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "copy-backend": "copyfiles -f backend/**/* dist-electron/",
     "rebuildDB": "electron-rebuild -f -w sqlite3",
+    "release": "electron-builder",
     "test": "run-script-os",
     "test:default": "if [ -d dist ] && [ -d dist-electron ]; then jest; else tsc && vite build && npm run copy-backend && jest; fi",
     "test:windows": "if exist dist (if exist dist-electron (jest) else (tsc && vite build && npm run copy-backend && jest)) else (tsc && vite build && npm run copy-backend && jest)",

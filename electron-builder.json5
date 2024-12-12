@@ -3,7 +3,6 @@
   $schema: "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   appId: "my-electron-app",
   asar: false,
-  productName: "my-electron-app",
   directories: {
     output: "release/${version}",
   },

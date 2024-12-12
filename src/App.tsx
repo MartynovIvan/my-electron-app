@@ -149,7 +149,7 @@ function App() {
 
   const handleHistoryItemClick = (item: { query: string; output: string }) => {
     setQuery(item.query);
-    setResult(item.output);
+    setResult(JSON.parse(item.output));
   };
 
   const addQueryToHistory = async (parsedQuery: string, result: string) => {
@@ -183,8 +183,7 @@ function App() {
   if (!settings) return;
 
   return (
-    <div className="container mt-5">
-      {/* Settings Modal */}
+    <div className="app-content">
       {showSettings && (
         <div className="modal-overlay">
           <div className="modal-dialog">
@@ -301,87 +300,97 @@ function App() {
           </div>
         </div>
       )}
-
-      {/* Rest of your App.js content */}
-      <div className="row justify-content-center mb-4">
-        <div className="col-md-8">
-          <div className="form-check form-switch">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
-              checked={isAdvanced}
-              onChange={() => setIsAdvanced(!isAdvanced)}
-            />
-            <label
-              className="form-check-label"
-              htmlFor="flexSwitchCheckDefault"
-            >
-              Advanced view
-            </label>
+      <div className="titlebar">MongoDB Query Executor</div>
+      <div className="app-body">
+        <div className="app-top">
+          <div className="col-md-8">
+            <div className="form-check form-switch">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="flexSwitchCheckDefault"
+                checked={isAdvanced}
+                onChange={() => setIsAdvanced(!isAdvanced)}
+              />
+              <label
+                className="form-check-label"
+                htmlFor="flexSwitchCheckDefault"
+              >
+                Advanced view
+              </label>
+            </div>
           </div>
         </div>
-      </div>
+        <h1 className="text-center mb-4">MongoDB Query Executor</h1>
 
-      <h1 className="text-center mb-4">MongoDB Query Executor</h1>
-
-      <div className="row justify-content-center">
-        <div className="col-md-8">
-          <div className={`card shadow-sm ${isAdvanced ? "sticky-top" : ""}`}>
-            <div className="card-body">
-              <h5 className="card-title">Enter MongoDB Query</h5>
-              <textarea
-                className={`form-control mb-3 ${
-                  theme === "dark" ? "dark-textarea" : ""
-                }`}
-                rows={6}
-                placeholder="Enter MongoDB query (e.g., { age: { $gt: 25 } })"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              <button
-                className="btn btn-primary btn-block"
-                onClick={handleQuerySubmit}
-              >
-                Run Query
-              </button>
+        <div className="app-bottom">
+          <div className="app-action">
+            <div className={`card shadow-sm ${isAdvanced ? "sticky-top" : ""}`}>
+              <div className="card-body">
+                <h5 className="card-title">Enter MongoDB Query</h5>
+                <textarea
+                  className={`form-control mb-3 ${
+                    theme === "dark" ? "dark-textarea" : ""
+                  }`}
+                  rows={6}
+                  placeholder="Enter MongoDB query (e.g., { age: { $gt: 25 } })"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+                <button
+                  className="btn btn-primary btn-block"
+                  onClick={handleQuerySubmit}
+                >
+                  Run Query
+                </button>
+              </div>
             </div>
           </div>
-
-          {result && (
-            <div
-              className={`card shadow-sm mt-4 ${
-                isAdvanced ? "sticky-top" : ""
-              }`}
-            >
-              <div className="card-body">
-                <h5>Query Result</h5>
-                <pre>{JSON.stringify(result, null, 2)}</pre>
+          <div
+            className={`app-res-his-wrapper ${
+              isAdvanced ? "flex-row" : "flex-column"
+            }`}
+          >
+            {result && (
+              <div
+                className={`app-results ${
+                  !isAdvanced ? "overflow-visible" : ""
+                }`}
+              >
+                <div className={`card shadow-sm`}>
+                  <div className="card-body">
+                    <h5>Query Result</h5>
+                    <pre>{JSON.stringify(result, null, 2)}</pre>
+                  </div>
+                </div>
               </div>
+            )}
+            <div className="app-history">
+              {isAdvanced && (
+                <div className={`card shadow-sm`}>
+                  <div className="card-body">
+                    <h5>Query History</h5>
+                    <div className="list-group">
+                      {history.map(
+                        (item: { query: string; output: string }, index) => (
+                          <div
+                            key={index}
+                            className={`list-group-item list-group-item-action text-truncate ${
+                              theme === "dark" ? "dark-list-group-item" : ""
+                            }`}
+                            onClick={() => handleHistoryItemClick(item)}
+                          >
+                            {`Query: ${item.query} | Result: ${item.output}`}
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-
-          {isAdvanced && (
-            <div className="mt-4">
-              <h5>Query History</h5>
-              <div className="list-group">
-                {history.map(
-                  (item: { query: string; output: string }, index) => (
-                    <button
-                      key={index}
-                      className={`list-group-item list-group-item-action text-truncate ${
-                        theme === "dark" ? "dark-list-group-item" : ""
-                      }`}
-                      onClick={() => handleHistoryItemClick(item)}
-                    >
-                      {`Query: ${item.query} | Result: ${item.output}`}
-                    </button>
-                  )
-                )}
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
