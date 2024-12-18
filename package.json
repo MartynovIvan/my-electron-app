@@ -28,7 +28,8 @@
     "test": "run-script-os",
     "test:default": "if [ -d dist ] && [ -d dist-electron ]; then jest; else tsc && vite build && npm run copy-backend && jest; fi",
     "test:windows": "if exist dist (if exist dist-electron (jest) else (tsc && vite build && npm run copy-backend && jest)) else (tsc && vite build && npm run copy-backend && jest)",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "wdio": "wdio run ./wdio.conf.ts"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
@@ -48,6 +49,7 @@
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",
+    "@wdio/cli": "^9.4.3",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "electron": "^30.0.1",
